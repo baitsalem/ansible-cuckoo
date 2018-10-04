@@ -1,0 +1,23 @@
+---
+
+
+- name: Add an Apt signing key for inetsim repository
+  apt_key:
+    url: http://www.inetsim.org/inetsim-archive-signing-key.asc
+    state: present
+
+- name: add inetsim repository 
+  apt_repository:
+    repo: deb http://www.inetsim.org/debian/ binary/ 
+    state: present
+
+
+- name: installer le paquet inetsim
+
+  apt:
+    name: inetsim
+    update_cache: yes
+    state: present
+   
+
+

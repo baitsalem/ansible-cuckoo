@@ -1,0 +1,12 @@
+---
+
+- name: add backport contrib repository 
+  apt_repository:
+    repo: deb http://ftp.debian.org/debian stretch-backports main contrib 
+    state: present
+
+- name: install virtualbox
+  apt:
+    name: virtualbox
+    state: latest
+    update_cache: yes

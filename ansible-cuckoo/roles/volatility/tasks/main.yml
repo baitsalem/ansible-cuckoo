@@ -1,0 +1,101 @@
+---
+
+- name: installer les paquets apt requis pour l'installation de Volatility
+
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+   
+  with_items:
+ 
+      - pcregrep 
+      - libpcre++-dev 
+      - python-dev
+
+      
+- name: Download PIL
+  get_url:
+    url: "http://effbot.org/downloads/Imaging-{{ pil_version }}.tar.gz"
+    dest: /tmp/
+    mode: 0440
+
+
+- name: Extraction de PIL
+  unarchive:
+    src: "/tmp/Imaging-{{ pil_version }}.tar.gz"
+    dest: /tmp/ 
+    remote_src: yes
+
+- name: Install PIL
+  command: python setup.py build install
+  args:
+    chdir: /tmp/Imaging-{{ pil_version }}
+ 
+
+- name: Download distorm
+  get_url:
+    url: "https://github.com/gdabah/distorm/releases/download/v3.3.4/distorm{{ distorm_version }}.zip"
+    dest: /tmp/
+    mode: 0440
+
+- name: Extraction de distorm
+  unarchive:
+    src: "/tmp/distorm{{ distorm_version }}.zip"
+    dest: /tmp/ 
+    remote_src: yes
+
+- name: Install distorm
+  command: python setup.py build install
+  args:
+    chdir: /tmp/distorm{{ distorm_version }}
+    
+
+- name: Download Pycrypto
+  get_url:
+    url: "https://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-{{ pycrypto_version }}.tar.gz"
+    dest: /tmp/
+    mode: 0440
+
+
+- name: Extraction de Pycrypto
+  unarchive:
+    src: "/tmp/pycrypto-{{ pycrypto_version }}.tar.gz"
+    dest: /tmp/ 
+    remote_src: yes
+
+- name: Pycrypto configure
+  command: ./configure 
+  args:
+    chdir: /tmp/pycrypto-{{ pycrypto_version }}
+
+- name: Pycrypto Make install
+  command: python setup.py build install
+  args:
+    chdir: /tmp/pycrypto-{{ pycrypto_version }}
+
+- name: Install pip requirements for volatility
+  
+  pip:
+  
+    name: "{{ item }}"
+    state: latest
+  
+  with_items:
+      
+      - openpyxl 
+      - ujson 
+
+
+- name: Download volatility 
+  git:
+    repo: 'https://github.com/volatilityfoundation/volatility.git'
+    dest: /tmp/volatility
+
+
+- name: Volatility install
+  command: python setup.py build install
+  args:
+    chdir: /tmp/volatility
+
+

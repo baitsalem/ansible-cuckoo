@@ -1,0 +1,64 @@
+---
+# This playbook deploys the whole application stack in this site.
+
+- name: Installation et configuration de virtualbox
+  
+  hosts: SECURITY_VMS
+  remote_user: debian
+  become: true
+  become_method: sudo
+
+  roles:
+     - virtualbox
+
+- name: Installation et configuration des prérequis
+
+  hosts: SECURITY_VMS
+  remote_user: debian
+  become: true
+  become_method: sudo
+
+  roles:
+    - requirements
+ 
+- name: Installation de Yara
+
+  hosts: SECURITY_VMS
+  remote_user: debian
+  become: true
+  become_method: sudo
+
+  roles:
+    - yara
+
+- name: Installation de Inetsim
+
+  hosts: SECURITY_VMS
+  remote_user: debian
+  become: true
+  become_method: sudo
+
+  roles:
+    - inetsim
+ 
+- name: Installation de Volatility
+
+  hosts: SECURITY_VMS
+  remote_user: debian
+  become: true
+  become_method: sudo
+
+  roles:
+    - volatility
+ 
+- name: Installation de Cuckoo
+
+  hosts: SECURITY_VMS
+  remote_user: debian
+  become: true
+  become_method: sudo
+
+  roles:
+    - cuckoo
+
+    

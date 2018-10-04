@@ -1,0 +1,30 @@
+---
+    
+- name: cuckoo install 
+  
+  pip:
+  
+    name: "{{ item }}"
+    state: latest
+  
+  with_items:
+      
+      - setuptools
+      - cuckoo
+
+- name: create cuckoo group
+  group:
+    name: cuckoo
+    state: present
+ 
+- name: create cuckoo user
+  user:
+    name: cuckoo
+    groups: cuckoo,vboxusers
+    append: yes
+
+- name: add debian user to vboxusers
+  user:
+    name: "{{ user }}"
+    groups: vboxusers
+    append: yes

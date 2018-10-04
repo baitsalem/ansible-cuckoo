@@ -1,0 +1,48 @@
+---
+
+
+- name: installer les paquets requis pour cuckoo
+
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+   
+  with_items:
+ 
+      - python 
+      - python-pip 
+      - python-dev 
+      - libffi-dev 
+      - libssl-dev
+      - python-virtualenv 
+      - python-setuptools 
+      - libjpeg-dev 
+      - zlib1g-dev 
+      - swig  
+      - mongodb 
+      - postgresql 
+      - libpq-dev
+      - libcap2-bin
+      - libguac-client-rdp0 
+      - libguac-client-vnc0 
+      - libguac-client-ssh0 
+      - guacd
+      - lsof
+      - psmisc
+
+- name: set cap_net_raw+eip capability on tcpdump
+  capabilities:
+    path: /usr/sbin/tcpdump
+    capability: cap_net_raw+eip
+    state: present
+
+- name: set cap_net_admin capability on tcpdump
+  capabilities:
+    path: /usr/sbin/tcpdump
+    capability: cap_net_admin+eip
+    state: present
+
+- name: install M2crypto
+
+  command: pip install m2crypto
